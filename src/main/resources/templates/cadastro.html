@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CoupleTour - Cadastro de Usuário</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/cadastro.css}">
+</head>
+<body>
+
+<main class="page">
+
+    <aside class="brand">
+        <div class="brand-top">
+            <svg class="logo-mark" viewBox="0 0 40 24" role="img" aria-label="Duas pessoas vinculadas">
+                <circle cx="13" cy="12" r="11" class="ring ring-a"/>
+                <circle cx="27" cy="12" r="11" class="ring ring-b"/>
+            </svg>
+            <span class="logo-text">CoupleTour</span>
+        </div>
+
+        <svg class="route" viewBox="0 0 400 300" aria-hidden="true">
+            <path class="route-line" d="M60 240 C140 240, 120 140, 200 150 S300 90, 340 60"/>
+            <circle class="stop" cx="200" cy="150" r="6"/>
+
+            <g class="pin pin-a">
+                <circle cx="60" cy="240" r="26" class="halo"/>
+                <circle cx="60" cy="240" r="14" class="dot"/>
+                <circle cx="60" cy="240" r="5" class="core"/>
+            </g>
+            <g class="pin pin-b">
+                <circle cx="340" cy="60" r="26" class="halo"/>
+                <circle cx="340" cy="60" r="14" class="dot"/>
+                <circle cx="340" cy="60" r="5" class="core"/>
+            </g>
+        </svg>
+
+        <div class="brand-bottom">
+            <h2>Todos os rolês de vocês em um só lugar.</h2>
+        </div>
+    </aside>
+
+    <section class="card">
+        <header class="card-header">
+            <h1>Crie sua conta</h1>
+        </header>
+
+        <div th:if="${sucesso}" class="success" role="status" th:text="${sucesso}"></div>
+
+        <form th:action="@{/cadastro}" th:object="${usuario}" method="post">
+
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" th:field="*{nome}"
+                       th:classappend="${#fields.hasErrors('nome')} ? 'invalid'"
+                       placeholder="Como você quer ser chamado(a)"
+                       autocomplete="name" required />
+                <div class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" th:field="*{email}"
+                       th:classappend="${#fields.hasErrors('email')} ? 'invalid'"
+                       placeholder="voce@exemplo.com"
+                       autocomplete="email" required />
+                <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" th:field="*{senha}"
+                       th:classappend="${#fields.hasErrors('senha')} ? 'invalid'"
+                       placeholder="Crie uma senha"
+                       autocomplete="new-password" required />
+                <div class="error" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="dataNascimento">Data de nascimento</label>
+                    <input type="date" id="dataNascimento" th:field="*{dataNascimento}"
+                           th:classappend="${#fields.hasErrors('dataNascimento')} ? 'invalid'"
+                           autocomplete="bday" required />
+                    <div class="error" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pronomeId">Pronome</label>
+                    <select id="pronomeId" th:field="*{pronomeId}"
+                            th:classappend="${#fields.hasErrors('pronomeId')} ? 'invalid'"
+                            required>
+                        <option value="">Selecione...</option>
+                        <option th:each="p : ${pronomesList}"
+                                th:value="${p.id}"
+                                th:text="${p.textoExibicao}">
+                        </option>
+                    </select>
+                    <div class="error" th:if="${#fields.hasErrors('pronomeId')}" th:errors="*{pronomeId}"></div>
+                </div>
+            </div>
+
+            <button type="submit">Criar conta</button>
+        </form>
+    </section>
+
+</main>
+
+</body>
+</html>
