@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::#main-content})}">
+<head>
+    <title>CoupleTour - Página de Teste</title>
+</head>
+<body>
+
+<div id="main-content" class="card">
+    <header class="card-header">
+        <h2>Página de Teste (Placeholder)</h2>
+        <p>Exemplo de reutilização de layout.</p>
+    </header>
+    <p>Esta view herda o cabeçalho com o logo SVG, a barra de navegação, o rodapé e as variáveis do CSS sem duplicar código HTML.</p>
+</div>
+
+</body>
+</html>

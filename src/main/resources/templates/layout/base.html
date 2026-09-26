@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:replace="${title}">CoupleTour</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="app-header">
+    <a th:href="@{/}" class="brand-logo">
+        <svg class="logo-mark" viewBox="0 0 40 24" role="img" aria-label="CoupleTour Logo">
+            <circle cx="13" cy="12" r="11" class="ring ring-a"/>
+            <circle cx="27" cy="12" r="11" class="ring ring-b"/>
+        </svg>
+        <span class="logo-text">CoupleTour</span>
+    </a>
+
+    <nav class="app-nav">
+        <a th:href="@{/}">Início</a>
+        <a th:href="@{/cadastro}">Cadastro</a>
+        <a th:href="@{/teste}">Página de Teste</a>
+    </nav>
+</header>
+
+<main class="app-content">
+    <div th:replace="${content}">
+        <!-- Conteúdo injetado dinamicamente -->
+    </div>
+</main>
+
+<footer class="app-footer">
+    <p>&copy; 2026 CoupleTour. Todos os rolês de vocês em um só lugar.</p>
+</footer>
+
+</body>
+</html>

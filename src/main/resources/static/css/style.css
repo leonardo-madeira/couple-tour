@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+:root {
+    --noite: #211f3f;
+    --coral: #ff5c7a;
+    --turquesa: #1fb5a3;
+
+    --bg: #f3f2fb;
+    --surface: #ffffff;
+    --text: #211f3f;
+    --muted: #66647f;
+    --border: #d9d7ec;
+    --field-bg: #faf9ff;
+
+    --error: #c72c4d;
+    --error-bg: #fff0f3;
+    --ok: #12735f;
+    --ok-bg: #e4f7f3;
+
+    --font-display: "Sora", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #16152c;
+        --surface: #1e1c3a;
+        --text: #efeefc;
+        --muted: #a5a3c4;
+        --border: #38355f;
+        --field-bg: #191833;
+
+        --error: #ff93a8;
+        --error-bg: #3b1a29;
+        --ok: #72e0cf;
+        --ok-bg: #123a36;
+    }
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Header & Nav */
+header.app-header {
+    background: var(--noite);
+    color: #fff;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--border);
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+.logo-mark {
+    width: 36px;
+    height: 22px;
+}
+
+.ring { fill: none; stroke-width: 3; }
+.ring-a { stroke: var(--coral); }
+.ring-b { stroke: var(--turquesa); }
+
+.logo-text {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+nav.app-nav {
+    display: flex;
+    gap: 1rem;
+}
+
+nav.app-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+nav.app-nav a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--turquesa);
+}
+
+/* Área Principal e Card */
+main.app-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem 1.5rem;
+    width: 100%;
+}
+
+.card {
+    background: var(--surface);
+    width: 100%;
+    max-width: 36rem;
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.card-header h1, .card-header h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.card-header p {
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+}
+
+/* Footer */
+footer.app-footer {
+    background: var(--noite);
+    color: var(--muted);
+    text-align: center;
+    padding: 1.25rem;
+    font-size: 0.875rem;
+    margin-top: auto;
+}
