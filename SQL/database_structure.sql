@@ -46,13 +46,97 @@ CREATE TABLE stage.relacionamentos (
     CHECK (usuario_a_id <> usuario_b_id)
 );
 
+CREATE TABLE stage.categorias (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (nome)
+);
+
+INSERT INTO stage.categorias(nome)
+VALUES 
+    ('Restaurante'),
+    ('Barzinho'),
+    ('Sorveteria'),
+    ('Cafeteria'),
+    ('Parque'),
+    ('Cinema'),
+    ('Balada'),
+    ('Livraria'),
+    ('Museu'),
+    ('Teatro'),
+    ('Outros');
+
 CREATE TABLE stage.lugares (
     id BIGINT NOT NULL AUTO_INCREMENT,
     public_id CHAR(36) NOT NULL,
     nome VARCHAR(255) NOT NULL,
+    categoria_id INT NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE (public_id)
+    UNIQUE (public_id),
+    FOREIGN KEY (categoria_id)
+        REFERENCES stage.categorias(id)
 );
+
+INSERT INTO stage.lugares(public_id, nome, categoria_id)
+VALUES 
+    (UUID(), 'O Espanhol', 1),
+    (UUID(), 'Boussolé Gastrobar', 1),
+    (UUID(), 'Strassberg', 1),
+    (UUID(), 'Barolo Trattoria', 1),
+    (UUID(), 'Serafinni', 1),
+    (UUID(), 'Empório Araçá', 1),
+    (UUID(), 'Villa Fontana', 1),
+    (UUID(), 'La Gondola', 1),
+    (UUID(), 'Galpão Nelore', 1),
+    (UUID(), 'Coco Bambu Londrina', 1),
+    (UUID(), 'Koala Sushi', 1),
+    (UUID(), 'Matsuri', 1),
+    (UUID(), 'Guanciale', 1),
+    (UUID(), 'Zuppa', 1),
+    (UUID(), 'Bar do Tomio', 2),
+    (UUID(), 'Pier Santa Monica', 2),
+    (UUID(), 'Flannigan''s Irish Pub', 2),
+    (UUID(), 'Menina Bar', 2),
+    (UUID(), 'Bar Valentino', 2),
+    (UUID(), 'Maximo Villa', 2),
+    (UUID(), 'Cheers Irish Pub', 2),
+    (UUID(), 'Oley', 2),
+    (UUID(), 'Gelobel', 3),
+    (UUID(), 'Freddo Gelateria', 3),
+    (UUID(), 'Chiquinho Sorvetes', 3),
+    (UUID(), 'Bacio di Latte', 3),
+    (UUID(), 'Hachimitsu', 4),
+    (UUID(), 'O Armazém Café', 4),
+    (UUID(), 'Nelson Boulangerie', 4),
+    (UUID(), 'Fura Bolo', 4),
+    (UUID(), 'Doceria da Maria', 4),
+    (UUID(), 'Kopenhagen', 4),
+    (UUID(), 'Mais1 Café', 4),
+    (UUID(), 'Lago Igapó', 5),
+    (UUID(), 'Jardim Botânico de Londrina', 5),
+    (UUID(), 'Zerão', 5),
+    (UUID(), 'Bosque Marechal Cândido Rondon', 5),
+    (UUID(), 'Praça Nishinomiya', 5),
+    (UUID(), 'Multiplex Catuaí', 6),
+    (UUID(), 'Cinemark Boulevard', 6),
+    (UUID(), 'Cineflix Aurora', 6),
+    (UUID(), 'Lumière', 6),
+    (UUID(), 'FOLKS Pub Sertanejo', 7),
+    (UUID(), 'Escritório Bar', 7),
+    (UUID(), 'Livrarias Curitiba (Catuaí)', 8),
+    (UUID(), 'Sebo Capricho', 8),
+    (UUID(), 'Livraria da Vila (Aurora)', 8),
+    (UUID(), 'Museu Histórico de Londrina', 9),
+    (UUID(), 'Museu de Arte de Londrina', 9),
+    (UUID(), 'Teatro Ouro Verde', 10),
+    (UUID(), 'Teatro Marista', 10),
+    (UUID(), 'Mercado Municipal de Londrina', 11),
+    (UUID(), 'Catuaí Shopping', 11),
+    (UUID(), 'Boulevard Shopping', 11),
+    (UUID(), 'Aurora Shopping', 11),
+    (UUID(), 'Calçadão de Londrina', 11);
+
 
 CREATE TABLE stage.avaliacao_individual (
     id BIGINT NOT NULL AUTO_INCREMENT,
