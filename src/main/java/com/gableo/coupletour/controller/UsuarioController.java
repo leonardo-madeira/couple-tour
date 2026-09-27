@@ -19,10 +19,12 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final PronomeRepository pronomeRepository;
+    private final com.gableo.coupletour.service.JwtService jwtService;
 
-    public UsuarioController(UsuarioService usuarioService, PronomeRepository pronomeRepository) {
+    public UsuarioController(UsuarioService usuarioService, PronomeRepository pronomeRepository, com.gableo.coupletour.service.JwtService jwtService) {
         this.usuarioService = usuarioService;
         this.pronomeRepository = pronomeRepository;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -38,6 +40,7 @@ public class UsuarioController {
     public String cadastrar(@Valid @ModelAttribute("usuario") UsuarioCadastroDTO dto,
                             BindingResult bindingResult,
                             Model model,
+                            jakarta.servlet.http.HttpServletResponse response,
                             RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
@@ -46,9 +49,16 @@ public class UsuarioController {
         }
 
         try {
-            usuarioService.cadastrar(dto);
-            redirectAttributes.addFlashAttribute("sucesso", "Cadastro realizado com sucesso!");
-            return "redirect:/cadastro";
+            com.gableo.coupletour.model.Usuario usuario = usuarioService.cadastrar(dto);
+            String token = jwtService.gerarToken(usuario);
+            
+            jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT-TOKEN", token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(86400);
+            response.addCookie(cookie);
+
+            return "redirect:/feed";
         } catch (IllegalArgumentException e) {
             bindingResult.rejectValue("email", "error.usuario", e.getMessage());
             model.addAttribute("pronomesList", pronomeRepository.findAll());
