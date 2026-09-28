@@ -148,4 +148,17 @@ public class PostagemService {
             }
         }
     }
+    
+    @Transactional
+    public void deletarPostagem(String usuarioPublicId, Long lugarId) {
+        Usuario usuario = usuarioRepo.findByPublicId(usuarioPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+        Relacionamento rel = vinculacaoService.getRelacionamentoAtivo(usuarioPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("Relacionamento não encontrado."));
+
+        AvaliacaoIndividual avaliacao = avaliacaoRepo.findByRelacionamentoIdAndUsuarioIdAndLugarId(rel.getId(), usuario.getId(), lugarId)
+                .orElseThrow(() -> new IllegalArgumentException("Avaliação não encontrada."));
+
+        avaliacaoRepo.delete(avaliacao);
+    }
 }

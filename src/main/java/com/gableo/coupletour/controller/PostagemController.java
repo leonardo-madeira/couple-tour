@@ -38,6 +38,7 @@ public class PostagemController {
 
         model.addAttribute("lugares", lugarRepository.findAllWithCategoria());
         model.addAttribute("postagemDTO", new PostagemDTO());
+        model.addAttribute("editMode", false);
         return "nova-postagem";
     }
 
@@ -84,6 +85,21 @@ public class PostagemController {
         try {
             postagemService.atualizarPostagem(publicId, lugarId, postagemDTO);
             redirectAttributes.addFlashAttribute("sucesso", "Avaliação atualizada com sucesso!");
+            return "redirect:/feed";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/postagem/editar/" + lugarId;
+        }
+    }
+    
+    @org.springframework.web.bind.annotation.DeleteMapping("/editar/{lugarId}")
+    public String deletarPostagem(@org.springframework.web.bind.annotation.PathVariable Long lugarId,
+                                  jakarta.servlet.http.HttpServletRequest request,
+                                  RedirectAttributes redirectAttributes) {
+        String publicId = (String) request.getAttribute("usuarioId");
+        try {
+            postagemService.deletarPostagem(publicId, lugarId);
+            redirectAttributes.addFlashAttribute("sucesso", "Avaliação excluída com sucesso!");
             return "redirect:/feed";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("erro", e.getMessage());
