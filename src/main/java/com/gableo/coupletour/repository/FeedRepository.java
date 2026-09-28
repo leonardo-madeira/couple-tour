@@ -55,7 +55,7 @@ public interface FeedRepository extends Repository<Relacionamento, Long> {
             ON cpr_a.relacionamento_id = r.id AND cpr_a.usuario_id = ua.id
         LEFT JOIN stage.casal_page_respostas cpr_b 
             ON cpr_b.relacionamento_id = r.id AND cpr_b.usuario_id = ub.id
-        WHERE (ai_a.id IS NOT NULL OR ai_b.id IS NOT NULL) 
+        WHERE r.relacionamento_ativo = true AND (ai_a.id IS NOT NULL OR ai_b.id IS NOT NULL) 
           AND (COALESCE(ai_a.post_visibility, true) = true AND COALESCE(ai_b.post_visibility, true) = true)
         ORDER BY dataPostagem DESC
     """, nativeQuery = true)
@@ -108,7 +108,7 @@ public interface FeedRepository extends Repository<Relacionamento, Long> {
             ON cpr_a.relacionamento_id = r.id AND cpr_a.usuario_id = ua.id
         LEFT JOIN stage.casal_page_respostas cpr_b 
             ON cpr_b.relacionamento_id = r.id AND cpr_b.usuario_id = ub.id
-        WHERE r.id = :relacionamentoId
+        WHERE r.relacionamento_ativo = true AND r.id = :relacionamentoId
           AND (ai_a.id IS NOT NULL OR ai_b.id IS NOT NULL) 
         ORDER BY dataPostagem DESC
     """, nativeQuery = true)

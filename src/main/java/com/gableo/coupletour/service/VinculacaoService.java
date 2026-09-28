@@ -54,4 +54,12 @@ public class VinculacaoService {
         return usuarioRepository.findByPublicId(userPublicId)
                 .flatMap(relacionamentoRepository::findAtivoByUser);
     }
+
+    @Transactional
+    public void desvincular(String userPublicId) {
+        Relacionamento rel = getRelacionamentoAtivo(userPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("Você não possui um relacionamento ativo para desvincular."));
+        rel.setRelacionamentoAtivo(false);
+        relacionamentoRepository.save(rel);
+    }
 }

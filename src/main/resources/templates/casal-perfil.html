@@ -421,7 +421,7 @@
 
     <div th:if="${#lists.isEmpty(perfil.feedCasal)}" class="vazio">
         <h4>Nenhum rolê por aqui ainda...</h4>
-        <p>Seja o primeiro casal a avaliar um lugar!</p>
+        <p>Seja o primeire a avaliar um lugar!</p>
         <a href="/postagem/nova" class="btn-novo">Criar primeiro post</a>
     </div>
 
@@ -458,7 +458,11 @@
                 <textarea class="form-control" name="resposta3" th:field="*{resposta3}" rows="2" required></textarea>
             </div>
 
-            <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill">Salvar</button>
+            <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill mb-3">Salvar</button>
+        </form>
+
+        <form action="/vinculacao/desvincular" method="POST" onsubmit="return confirm('Tem certeza que deseja desfazer esse relacionamento? Todos os posts de vocês sumirão e a página do casal será deletada.');">
+            <button type="submit" class="btn btn-outline-danger w-100 fw-bold rounded-pill border-0">Desfazer Relacionamento 💔</button>
         </form>
       </div>
     </div>

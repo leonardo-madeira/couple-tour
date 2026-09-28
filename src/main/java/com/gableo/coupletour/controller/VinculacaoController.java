@@ -42,4 +42,18 @@ public class VinculacaoController {
             return "redirect:/vinculacao";
         }
     }
+    
+    @org.springframework.web.bind.annotation.PostMapping("/desvincular")
+    public String desvincular(jakarta.servlet.http.HttpServletRequest request,
+                              org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        String publicId = (String) request.getAttribute("usuarioId");
+        try {
+            vinculacaoService.desvincular(publicId);
+            redirectAttributes.addFlashAttribute("sucesso", "Relacionamento desfeito com sucesso.");
+            return "redirect:/vinculacao";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/feed";
+        }
+    }
 }
