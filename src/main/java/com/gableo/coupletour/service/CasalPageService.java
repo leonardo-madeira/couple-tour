@@ -18,15 +18,18 @@ public class CasalPageService {
     private final VinculacaoService vinculacaoService;
     private final UsuarioRepository usuarioRepo;
     private final GcpStorageService gcpStorageService;
+    private final com.gableo.coupletour.repository.FeedRepository feedRepo;
 
     public CasalPageService(CasalPageRespostasRepository respostasRepo,
                             VinculacaoService vinculacaoService,
                             UsuarioRepository usuarioRepo,
-                            GcpStorageService gcpStorageService) {
+                            GcpStorageService gcpStorageService,
+                            com.gableo.coupletour.repository.FeedRepository feedRepo) {
         this.respostasRepo = respostasRepo;
         this.vinculacaoService = vinculacaoService;
         this.usuarioRepo = usuarioRepo;
         this.gcpStorageService = gcpStorageService;
+        this.feedRepo = feedRepo;
     }
 
     public CasalPageEditDTO carregarDadosEdicao(String publicIdLogado) {
@@ -120,6 +123,8 @@ public class CasalPageService {
         view.setLabel1ParaA("A mania mais engraçada " + deleDelaA.toLowerCase());
         view.setLabel2ParaA("O que " + userB.getNome() + " mais admira n" + eleElaA.toLowerCase());
         view.setLabel3ParaA("O date favorito " + deleDelaA.toLowerCase());
+
+        view.setFeedCasal(feedRepo.getFeedDoCasal(rel.getId()));
 
         return view;
     }
