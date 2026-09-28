@@ -48,10 +48,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             request.setAttribute("usuarioEmail", claims.get("email"));
             request.setAttribute("usuarioPronome", claims.get("pronome"));
             request.setAttribute("usuarioUniqueToken", claims.get("unique_token"));
-            filterChain.doFilter(request, response);
         } catch (Exception e) {
             response.sendRedirect("/login");
+            return;
         }
+
+        filterChain.doFilter(request, response);
     }
 
     private String extrairToken(HttpServletRequest request) {
