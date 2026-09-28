@@ -2,6 +2,7 @@ package com.gableo.coupletour.dto;
 
 import java.util.List;
 import com.gableo.coupletour.dto.FeedProjection;
+import com.gableo.coupletour.dto.CasalSeguidoProjection;
 
 public class CasalPageViewDTO {
 
@@ -27,6 +28,15 @@ public class CasalPageViewDTO {
 
     private boolean podeEditarA;
     private boolean podeEditarB;
+    private boolean seguindo;
+    private int contagemSeguidores;
+    
+    public int getContagemSeguidores() { return contagemSeguidores; }
+    public void setContagemSeguidores(int contagemSeguidores) { this.contagemSeguidores = contagemSeguidores; }
+    
+    
+    public boolean isSeguindo() { return seguindo; }
+    public void setSeguindo(boolean seguindo) { this.seguindo = seguindo; }
 
 
     public boolean isPodeEditarA() { return podeEditarA; }
@@ -35,6 +45,10 @@ public class CasalPageViewDTO {
     public void setPodeEditarB(boolean podeEditarB) { this.podeEditarB = podeEditarB; }
 
     private List<FeedProjection> feedCasal;
+    private List<CasalSeguidoProjection> casaisSeguidos;
+
+    public List<CasalSeguidoProjection> getCasaisSeguidos() { return casaisSeguidos; }
+    public void setCasaisSeguidos(List<CasalSeguidoProjection> casaisSeguidos) { this.casaisSeguidos = casaisSeguidos; }
 
     public String getNomeA() { return nomeA; }
     public void setNomeA(String nomeA) { this.nomeA = nomeA; }

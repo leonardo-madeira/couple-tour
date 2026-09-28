@@ -43,6 +43,7 @@ public class CasalPageController {
             com.gableo.coupletour.dto.CasalPageViewDTO view = casalPageService.carregarPerfilPublico(publicId, logadoId);
             model.addAttribute("perfil", view);
             model.addAttribute("logadoPublicId", logadoId);
+            model.addAttribute("publicId", publicId);
 
             if (view.isPodeEditarA() || view.isPodeEditarB()) {
                 CasalPageEditDTO editDTO = casalPageService.carregarDadosEdicao(logadoId);
@@ -69,5 +70,16 @@ public class CasalPageController {
             redirectAttributes.addFlashAttribute("erro", "Erro ao salvar perfil: " + e.getMessage());
             return "redirect:/casal/editar";
         }
+    }
+    
+    @PostMapping("/{publicId}/seguir")
+    public String toggleSeguir(@PathVariable String publicId, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        String logadoId = (String) request.getAttribute("usuarioId");
+        try {
+            casalPageService.toggleSeguir(logadoId, publicId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+        }
+        return "redirect:/casal/" + publicId;
     }
 }

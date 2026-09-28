@@ -5,6 +5,8 @@ import com.gableo.coupletour.model.CasalPageRespostas;
 import com.gableo.coupletour.model.Relacionamento;
 import com.gableo.coupletour.model.Usuario;
 import com.gableo.coupletour.repository.CasalPageRespostasRepository;
+import com.gableo.coupletour.repository.SeguidorRepository;
+import com.gableo.coupletour.model.Seguidor;
 import com.gableo.coupletour.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,17 +21,20 @@ public class CasalPageService {
     private final UsuarioRepository usuarioRepo;
     private final GcpStorageService gcpStorageService;
     private final com.gableo.coupletour.repository.FeedRepository feedRepo;
+    private final SeguidorRepository seguidorRepo;
 
     public CasalPageService(CasalPageRespostasRepository respostasRepo,
                             VinculacaoService vinculacaoService,
                             UsuarioRepository usuarioRepo,
                             GcpStorageService gcpStorageService,
-                            com.gableo.coupletour.repository.FeedRepository feedRepo) {
+                            com.gableo.coupletour.repository.FeedRepository feedRepo,
+                            SeguidorRepository seguidorRepo) {
         this.respostasRepo = respostasRepo;
         this.vinculacaoService = vinculacaoService;
         this.usuarioRepo = usuarioRepo;
         this.gcpStorageService = gcpStorageService;
         this.feedRepo = feedRepo;
+        this.seguidorRepo = seguidorRepo;
     }
 
     public CasalPageEditDTO carregarDadosEdicao(String publicIdLogado) {
@@ -97,6 +102,14 @@ public class CasalPageService {
 
         view.setPodeEditarA(userA.getPublicId().equals(logadoPublicId));
         view.setPodeEditarB(userB.getPublicId().equals(logadoPublicId));
+        
+        if (logadoPublicId != null) {
+            usuarioRepo.findByPublicId(logadoPublicId).ifPresent(logado -> {
+                view.setSeguindo(seguidorRepo.existsByRelacionamentoAndSeguidor(rel, logado));
+            });
+        }
+        view.setContagemSeguidores(seguidorRepo.countByRelacionamento(rel));
+        view.setContagemSeguidores(seguidorRepo.countByRelacionamento(rel));
 
         respostasRepo.findByRelacionamentoIdAndUsuarioId(rel.getId(), userA.getId()).ifPresent(respA -> {
             view.setFotoAUrl(respA.getFotoPerfilUrl());
@@ -125,7 +138,25 @@ public class CasalPageService {
         view.setLabel3ParaA("O date favorito " + deleDelaA.toLowerCase());
 
         view.setFeedCasal(feedRepo.getFeedDoCasal(rel.getId()));
+        view.setCasaisSeguidos(seguidorRepo.findCasaisSeguidos(userA.getId(), userB.getId()));
 
         return view;
+    }
+    
+    @Transactional
+    public void toggleSeguir(String logadoId, String targetPublicId) {
+        Usuario logado = usuarioRepo.findByPublicId(logadoId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário logado não encontrado."));
+        Relacionamento rel = vinculacaoService.getRelacionamentoAtivo(targetPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("O usuário não está em um relacionamento ativo."));
+        
+        if (rel.getUsuarioA().getId().equals(logado.getId()) || rel.getUsuarioB().getId().equals(logado.getId())) {
+            throw new IllegalArgumentException("Você não pode seguir seu próprio relacionamento.");
+        }
+
+        seguidorRepo.findByRelacionamentoAndSeguidor(rel, logado).ifPresentOrElse(
+            seguidorRepo::delete,
+            () -> seguidorRepo.save(new Seguidor(rel, logado))
+        );
     }
 }

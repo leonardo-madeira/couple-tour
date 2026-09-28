@@ -255,8 +255,11 @@
         </div>
 
         <h1 class="couple-title" th:text="${perfil.nomeA + ' & ' + perfil.nomeB}">Casal</h1>
+        <p class="mt-2 mb-0" style="font-size: 0.9rem; opacity: 0.9;"><span th:text="${perfil.contagemSeguidores}">0</span> seguidores</p>
 
-        <button class="btn btn-follow">Seguir</button>
+        <form th:if="${!perfil.podeEditarA && !perfil.podeEditarB}" th:action="@{/casal/{id}/seguir(id=${publicId})}" method="POST" class="d-inline">
+            <button type="submit" class="btn btn-follow" th:classappend="${perfil.seguindo} ? 'btn-light text-danger' : ''" th:text="${perfil.seguindo} ? 'Seguindo' : 'Seguir'">Seguir</button>
+        </form>
 
         <button th:if="${perfil.podeEditarA || perfil.podeEditarB}" type="button" class="btn btn-follow ms-2" data-bs-toggle="modal" data-bs-target="#editModal">Editar Meu Perfil</button>
     </div>
@@ -307,6 +310,25 @@
             </div>
         </div>
     </div>
+
+
+<div class="bg-white rounded-4 p-4 shadow-sm mt-4 mb-4" th:if="${perfil.podeEditarA || perfil.podeEditarB}">
+    <h3 class="fw-bold mb-3" style="font-size: 1.1rem; color: var(--ink);">Casais que vocês seguem</h3>
+    
+    <div th:if="${perfil.casaisSeguidos == null || perfil.casaisSeguidos.isEmpty()}" class="text-muted" style="font-size: 0.9rem;">
+        Vocês ainda não seguem ninguém.
+    </div>
+    
+    <div th:if="${perfil.casaisSeguidos != null && !perfil.casaisSeguidos.isEmpty()}" class="d-flex gap-3 overflow-auto pb-2" style="scrollbar-width: none;">
+        <a th:each="casal : ${perfil.casaisSeguidos}" th:href="'/casal/' + ${casal.publicIdUrl}" class="text-decoration-none text-center" style="min-width: 70px;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; margin: 0 auto 8px auto; border: 2px solid var(--a); padding: 2px;">
+                <img th:if="${casal.fotoCasal != null}" th:src="${casal.fotoCasal}" class="w-100 h-100 rounded-circle object-fit-cover" alt="">
+                <div th:unless="${casal.fotoCasal != null}" class="w-100 h-100 rounded-circle bg-light d-flex align-items-center justify-content-center text-secondary fw-bold" th:text="${#strings.substring(casal.nomeCasal, 0, 1)}">C</div>
+            </div>
+            <div class="text-truncate" style="font-size: 0.75rem; color: var(--ink); font-weight: 600;" th:text="${casal.nomeCasal}">Nome do Casal</div>
+        </a>
+    </div>
+</div>
 
 <div class="feed mt-5">
 
