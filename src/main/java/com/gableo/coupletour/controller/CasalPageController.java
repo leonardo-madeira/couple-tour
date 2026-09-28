@@ -42,6 +42,7 @@ public class CasalPageController {
         try {
             com.gableo.coupletour.dto.CasalPageViewDTO view = casalPageService.carregarPerfilPublico(publicId, logadoId);
             model.addAttribute("perfil", view);
+            model.addAttribute("logadoPublicId", logadoId);
 
             if (view.isPodeEditarA() || view.isPodeEditarB()) {
                 CasalPageEditDTO editDTO = casalPageService.carregarDadosEdicao(logadoId);

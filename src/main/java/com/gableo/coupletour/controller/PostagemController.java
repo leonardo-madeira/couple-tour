@@ -55,4 +55,39 @@ public class PostagemController {
             return "redirect:/postagem/nova";
         }
     }
+
+    @GetMapping("/editar/{lugarId}")
+    public String editarPostagemForm(@org.springframework.web.bind.annotation.PathVariable Long lugarId, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+        String publicId = (String) request.getAttribute("usuarioId");
+        if (vinculacaoService.getRelacionamentoAtivo(publicId).isEmpty()) {
+            redirectAttributes.addFlashAttribute("erro", "Você precisa estar vinculado para editar postagens.");
+            return "redirect:/vinculacao";
+        }
+        try {
+            PostagemDTO dto = postagemService.carregarParaEdicao(publicId, lugarId);
+            model.addAttribute("lugares", lugarRepository.findAllWithCategoria());
+            model.addAttribute("postagemDTO", dto);
+            model.addAttribute("editMode", true);
+            return "nova-postagem";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/feed";
+        }
+    }
+
+    @org.springframework.web.bind.annotation.PutMapping("/editar/{lugarId}")
+    public String salvarEdicaoPostagem(@org.springframework.web.bind.annotation.PathVariable Long lugarId,
+                                       @ModelAttribute PostagemDTO postagemDTO,
+                                       HttpServletRequest request,
+                                       RedirectAttributes redirectAttributes) {
+        String publicId = (String) request.getAttribute("usuarioId");
+        try {
+            postagemService.atualizarPostagem(publicId, lugarId, postagemDTO);
+            redirectAttributes.addFlashAttribute("sucesso", "Avaliação atualizada com sucesso!");
+            return "redirect:/feed";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/postagem/editar/" + lugarId;
+        }
+    }
 }

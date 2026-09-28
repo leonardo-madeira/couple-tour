@@ -15,8 +15,9 @@ public class FeedController {
     }
 
     @GetMapping("/feed")
-    public String feed(Model model) {
+    public String feed(Model model, jakarta.servlet.http.HttpServletRequest request) {
         model.addAttribute("posts", feedService.getFeedGeral());
+        model.addAttribute("logadoPublicId", request.getAttribute("usuarioId"));
         return "feed";
     }
 }

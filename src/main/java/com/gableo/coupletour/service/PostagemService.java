@@ -68,6 +68,76 @@ public class PostagemService {
 
         avaliacao = avaliacaoRepo.save(avaliacao);
 
+        if (dto.getFotosRemovidas() != null && !dto.getFotosRemovidas().isEmpty()) {
+            java.util.List<com.gableo.coupletour.model.FotoAvaliacaoIndividual> fotosBanco = fotoRepo.findByAvaliacaoId(avaliacao.getId());
+            for (com.gableo.coupletour.model.FotoAvaliacaoIndividual foto : fotosBanco) {
+                if (dto.getFotosRemovidas().contains(foto.getId())) {
+                    fotoRepo.delete(foto);
+                }
+            }
+        }
+
+        if (dto.getFotos() != null) {
+            for (MultipartFile foto : dto.getFotos()) {
+                if (!foto.isEmpty()) {
+                    String url = gcpStorageService.uploadImagem(foto);
+                    FotoAvaliacaoIndividual fotoEntity = new FotoAvaliacaoIndividual(avaliacao, url);
+                    fotoRepo.save(fotoEntity);
+                }
+            }
+        }
+    }
+
+    public PostagemDTO carregarParaEdicao(String usuarioPublicId, Long lugarId) {
+        Usuario usuario = usuarioRepo.findByPublicId(usuarioPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+        Relacionamento rel = vinculacaoService.getRelacionamentoAtivo(usuarioPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("Relacionamento não encontrado."));
+
+        AvaliacaoIndividual avaliacao = avaliacaoRepo.findByRelacionamentoIdAndUsuarioIdAndLugarId(rel.getId(), usuario.getId(), lugarId)
+                .orElseThrow(() -> new IllegalArgumentException("Avaliação não encontrada."));
+
+        PostagemDTO dto = new PostagemDTO();
+        dto.setLugarId(lugarId);
+        dto.setNota1(avaliacao.getNotaPergunta1());
+        dto.setNota2(avaliacao.getNotaPergunta2());
+        dto.setNota3(avaliacao.getNotaPergunta3());
+        dto.setNota4(avaliacao.getNotaPergunta4());
+        dto.setDescricao(avaliacao.getDescricao());
+        dto.setPostVisibility(avaliacao.getPostVisibility());
+        java.util.List<com.gableo.coupletour.model.FotoAvaliacaoIndividual> fotos = fotoRepo.findByAvaliacaoId(avaliacao.getId());
+        dto.setFotosExistentes(fotos.stream().map(f -> new PostagemDTO.FotoDTO(f.getId(), f.getUrl())).collect(java.util.stream.Collectors.toList()));
+        return dto;
+    }
+
+    @Transactional
+    public void atualizarPostagem(String usuarioPublicId, Long lugarId, PostagemDTO dto) throws IOException {
+        Usuario usuario = usuarioRepo.findByPublicId(usuarioPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+        Relacionamento rel = vinculacaoService.getRelacionamentoAtivo(usuarioPublicId)
+                .orElseThrow(() -> new IllegalArgumentException("Relacionamento não encontrado."));
+
+        AvaliacaoIndividual avaliacao = avaliacaoRepo.findByRelacionamentoIdAndUsuarioIdAndLugarId(rel.getId(), usuario.getId(), lugarId)
+                .orElseThrow(() -> new IllegalArgumentException("Avaliação não encontrada."));
+
+        avaliacao.setNotaPergunta1(dto.getNota1());
+        avaliacao.setNotaPergunta2(dto.getNota2());
+        avaliacao.setNotaPergunta3(dto.getNota3());
+        avaliacao.setNotaPergunta4(dto.getNota4());
+        avaliacao.setDescricao(dto.getDescricao());
+        avaliacao.setPostVisibility(dto.getPostVisibility());
+
+        avaliacaoRepo.save(avaliacao);
+
+        if (dto.getFotosRemovidas() != null && !dto.getFotosRemovidas().isEmpty()) {
+            java.util.List<com.gableo.coupletour.model.FotoAvaliacaoIndividual> fotosBanco = fotoRepo.findByAvaliacaoId(avaliacao.getId());
+            for (com.gableo.coupletour.model.FotoAvaliacaoIndividual foto : fotosBanco) {
+                if (dto.getFotosRemovidas().contains(foto.getId())) {
+                    fotoRepo.delete(foto);
+                }
+            }
+        }
+
         if (dto.getFotos() != null) {
             for (MultipartFile foto : dto.getFotos()) {
                 if (!foto.isEmpty()) {

@@ -208,6 +208,10 @@
                     <p th:text="${post.descB}"></p>
                 </blockquote>
             </div>
+
+            <div class="mt-3 text-center" th:if="${post.usuarioAPublicId == logadoPublicId or post.usuarioBPublicId == logadoPublicId}">
+                <a th:href="'/postagem/editar/' + ${post.lugarId}" class="btn btn-outline-secondary btn-sm rounded-pill px-3" style="font-size: 0.8rem; font-weight: 600;">Editar Minha Avaliação</a>
+            </div>
         </section>
     </article>
 

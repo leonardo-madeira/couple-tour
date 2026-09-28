@@ -31,4 +31,22 @@ public class PostagemDTO {
     public void setPostVisibility(Boolean postVisibility) { this.postVisibility = postVisibility; }
     public List<MultipartFile> getFotos() { return fotos; }
     public void setFotos(List<MultipartFile> fotos) { this.fotos = fotos; }
+
+    private List<FotoDTO> fotosExistentes;
+    private List<Long> fotosRemovidas;
+
+    public List<FotoDTO> getFotosExistentes() { return fotosExistentes; }
+    public void setFotosExistentes(List<FotoDTO> fotosExistentes) { this.fotosExistentes = fotosExistentes; }
+    public List<Long> getFotosRemovidas() { return fotosRemovidas; }
+    public void setFotosRemovidas(List<Long> fotosRemovidas) { this.fotosRemovidas = fotosRemovidas; }
+
+    public static class FotoDTO {
+        private Long id;
+        private String url;
+        public FotoDTO(Long id, String url) { this.id = id; this.url = url; }
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
+        public String getUrl() { return url; }
+        public void setUrl(String url) { this.url = url; }
+    }
 }

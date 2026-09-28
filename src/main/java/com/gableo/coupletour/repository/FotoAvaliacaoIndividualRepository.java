@@ -4,4 +4,5 @@ import com.gableo.coupletour.model.FotoAvaliacaoIndividual;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FotoAvaliacaoIndividualRepository extends JpaRepository<FotoAvaliacaoIndividual, Long> {
+    java.util.List<FotoAvaliacaoIndividual> findByAvaliacaoId(Long avaliacaoId);
 }

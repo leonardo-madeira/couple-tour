@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AvaliacaoIndividualRepository extends JpaRepository<AvaliacaoIndividual, Long> {
     boolean existsByRelacionamentoIdAndUsuarioIdAndLugarId(Long relacionamentoId, Long usuarioId, Long lugarId);
+    java.util.Optional<AvaliacaoIndividual> findByRelacionamentoIdAndUsuarioIdAndLugarId(Long relacionamentoId, Long usuarioId, Long lugarId);
 }
