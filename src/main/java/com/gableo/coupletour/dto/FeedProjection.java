@@ -12,6 +12,7 @@ public interface FeedProjection {
 
     String getUsuarioAPublicId();
     String getUsuarioANome();
+    String getUsuarioAFotoUrl();
     BigDecimal getNotaMediaA();
     BigDecimal getANota1();
     BigDecimal getANota2();
@@ -21,6 +22,7 @@ public interface FeedProjection {
 
     String getUsuarioBPublicId();
     String getUsuarioBNome();
+    String getUsuarioBFotoUrl();
     BigDecimal getNotaMediaB();
     BigDecimal getBNota1();
     BigDecimal getBNota2();

@@ -111,8 +111,11 @@
         <div class="cabeca">
             <a th:href="'/casal/' + ${post.usuarioAPublicId}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px;">
                 <div class="avatares" aria-hidden="true">
-                    <span class="av a" th:text="${#strings.toUpperCase(#strings.substring(post.usuarioANome, 0, 1))}">A</span>
-                    <span class="av b" th:text="${#strings.toUpperCase(#strings.substring(post.usuarioBNome, 0, 1))}">B</span>
+                    <img th:if="${post.usuarioAFotoUrl != null}" th:src="${post.usuarioAFotoUrl}" class="av a" style="object-fit: cover;" alt="">
+                    <span th:unless="${post.usuarioAFotoUrl != null}" class="av a" th:text="${#strings.toUpperCase(#strings.substring(post.usuarioANome, 0, 1))}">A</span>
+                    
+                    <img th:if="${post.usuarioBFotoUrl != null}" th:src="${post.usuarioBFotoUrl}" class="av b" style="object-fit: cover;" alt="">
+                    <span th:unless="${post.usuarioBFotoUrl != null}" class="av b" th:text="${#strings.toUpperCase(#strings.substring(post.usuarioBNome, 0, 1))}">B</span>
                 </div>
                 <div class="casal" th:text="${post.usuarioANome + ' e ' + post.usuarioBNome}">Casal</div>
             </a>

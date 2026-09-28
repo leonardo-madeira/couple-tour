@@ -22,6 +22,7 @@ public interface FeedRepository extends Repository<Relacionamento, Long> {
             END AS notaMediaCasal,
             ua.public_id AS usuarioAPublicId,
             ua.nome AS usuarioANome,
+            cpr_a.foto_perfil_url AS usuarioAFotoUrl,
             ai_a.nota_media AS notaMediaA,
             ai_a.nota_pergunta_1 AS aNota1,
             ai_a.nota_pergunta_2 AS aNota2,
@@ -30,6 +31,7 @@ public interface FeedRepository extends Repository<Relacionamento, Long> {
             ai_a.descricao AS descA,
             ub.public_id AS usuarioBPublicId,
             ub.nome AS usuarioBNome,
+            cpr_b.foto_perfil_url AS usuarioBFotoUrl,
             ai_b.nota_media AS notaMediaB,
             ai_b.nota_pergunta_1 AS bNota1,
             ai_b.nota_pergunta_2 AS bNota2,
@@ -39,7 +41,7 @@ public interface FeedRepository extends Repository<Relacionamento, Long> {
             (SELECT GROUP_CONCAT(f.url SEPARATOR ',') 
              FROM stage.fotos_avaliacao_individual f 
              WHERE f.avaliacao_id IN (ai_a.id, ai_b.id)) AS fotosUrls,
-            GREATEST(COALESCE(ai_a.created_at, '1970-01-01'), COALESCE(ai_b.created_at, '1970-01-01')) AS dataPostagem
+            GREATEST(COALESCE(ai_a.created_at, '1970-01-01'), COALESCE(ai_b.created_at, '1970-01-01')) - INTERVAL 3 HOUR AS dataPostagem
         FROM stage.relacionamentos r
         JOIN stage.usuarios ua ON r.usuario_a_id = ua.id
         JOIN stage.usuarios ub ON r.usuario_b_id = ub.id
@@ -49,6 +51,10 @@ public interface FeedRepository extends Repository<Relacionamento, Long> {
             ON ai_a.relacionamento_id = r.id AND ai_a.lugar_id = l.id AND ai_a.usuario_id = ua.id
         LEFT JOIN stage.avaliacao_individual ai_b 
             ON ai_b.relacionamento_id = r.id AND ai_b.lugar_id = l.id AND ai_b.usuario_id = ub.id
+        LEFT JOIN stage.casal_page_respostas cpr_a 
+            ON cpr_a.relacionamento_id = r.id AND cpr_a.usuario_id = ua.id
+        LEFT JOIN stage.casal_page_respostas cpr_b 
+            ON cpr_b.relacionamento_id = r.id AND cpr_b.usuario_id = ub.id
         WHERE (ai_a.id IS NOT NULL OR ai_b.id IS NOT NULL) 
           AND (COALESCE(ai_a.post_visibility, false) = true OR COALESCE(ai_b.post_visibility, false) = true)
         ORDER BY dataPostagem DESC
