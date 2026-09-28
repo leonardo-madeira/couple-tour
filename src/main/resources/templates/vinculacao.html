@@ -9,7 +9,7 @@
 <body class="bg-light min-vh-100 p-5">
 
 <div class="container bg-white p-5 rounded-4 shadow text-center position-relative" style="max-width: 600px;">
-    
+
     <a href="/feed" class="position-absolute top-0 start-0 m-4 text-decoration-none text-secondary d-flex align-items-center fw-semibold transition-opacity" 
        style="opacity: 0.7;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-1" viewBox="0 0 16 16">
@@ -21,7 +21,7 @@
 
     <div th:if="${erro}" class="alert alert-danger" th:text="${erro}"></div>
     <div th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}"></div>
-    
+
     <p class="mb-2">Olá, <strong th:text="${usuarioNome}">Usuário</strong>!</p>
     <div th:if="${nomeParceiro}" class="alert alert-info py-4">
         <h4 class="mb-3">Você já está em um relacionamento!</h4>
@@ -30,7 +30,7 @@
 
     <th:block th:unless="${nomeParceiro}">
         <p class="text-secondary mb-4">Compartilhe seu token ou insira o do seu parceire.</p>
-    
+
         <div class="mb-4">
             <h5>Seu Token:</h5>
             <div class="display-5 fw-bold text-danger bg-light p-3 border rounded d-inline-block letter-spacing-1"
@@ -38,9 +38,9 @@
                 ABCD
             </div>
         </div>
-    
+
         <hr class="my-4">
-    
+
         <form action="/vinculacao" method="POST">
             <div class="mb-4">
                 <label class="form-label fw-semibold">Token do(a) Parceire</label>

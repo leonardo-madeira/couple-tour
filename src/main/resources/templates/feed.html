@@ -97,7 +97,10 @@
 <header class="topo">
     <div class="topo-in">
         <div class="marca"><span class="selo" aria-hidden="true"><i></i><i></i></span>CoupleTour</div>
-        <a href="/postagem/nova" class="btn-novo">Novo post</a>
+        <div>
+            <a href="/casal/meu-perfil" class="btn-novo" style="margin-right: 10px; background: transparent; border: 2px solid var(--amor); color: var(--amor);">Meu Perfil</a>
+            <a href="/postagem/nova" class="btn-novo">Novo post</a>
+        </div>
     </div>
 </header>
 
@@ -147,7 +150,6 @@
             </div>
         </div>
 
-        <!-- Avaliações: A à esquerda, B à direita -->
         <section class="duelo">
             <div class="placar">
                 <div class="pessoa a">
@@ -204,7 +206,6 @@
         </section>
     </article>
 
-    <!-- Feed vazio -->
     <div th:if="${#lists.isEmpty(posts)}" class="vazio">
         <h4>Nenhum rolê por aqui ainda...</h4>
         <p>Seja o primeiro casal a avaliar um lugar!</p>

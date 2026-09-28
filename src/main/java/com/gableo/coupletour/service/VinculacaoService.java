@@ -46,7 +46,7 @@ public class VinculacaoService {
             rel.setUsuarioA(usuarioB);
             rel.setUsuarioB(usuarioA);
         }
-        
+
         relacionamentoRepository.save(rel);
     }
 

@@ -16,7 +16,7 @@ public class JwtService {
     @Value("${jwt.secret:MinhaChaveSecretaMuitoSeguraParaOCoupleTourComPeloMenos256BitsDeTamanho}")
     private String secret;
 
-    @Value("${jwt.expiration:86400000}") // 24 horas
+    @Value("${jwt.expiration:86400000}") 
     private long expirationMs;
 
     private SecretKey getSigningKey() {

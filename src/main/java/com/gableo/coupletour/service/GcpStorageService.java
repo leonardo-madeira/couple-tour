@@ -21,7 +21,7 @@ public class GcpStorageService {
 
     public String uploadImagem(MultipartFile arquivo) throws IOException {
         String fileName = UUID.randomUUID().toString() + "-" + arquivo.getOriginalFilename();
-        
+
         Storage storage = StorageOptions.newBuilder()
                 .setCredentials(GoogleCredentials.fromStream(new FileInputStream(".gcp/couple-tour-project-c905769bc828.json")))
                 .build()
@@ -29,9 +29,9 @@ public class GcpStorageService {
 
         BlobId blobId = BlobId.of(bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(arquivo.getContentType()).build();
-        
+
         storage.create(blobInfo, arquivo.getBytes());
-        
+
         return "https://storage.googleapis.com/" + bucketName + "/" + fileName;
     }
 }

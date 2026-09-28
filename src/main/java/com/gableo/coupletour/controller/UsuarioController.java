@@ -51,7 +51,7 @@ public class UsuarioController {
         try {
             com.gableo.coupletour.model.Usuario usuario = usuarioService.cadastrar(dto);
             String token = jwtService.gerarToken(usuario);
-            
+
             jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT-TOKEN", token);
             cookie.setHttpOnly(true);
             cookie.setPath("/");

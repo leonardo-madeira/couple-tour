@@ -30,12 +30,12 @@ public class PostagemController {
     @GetMapping("/nova")
     public String novaPostagem(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
         String publicId = (String) request.getAttribute("usuarioId");
-        
+
         if (vinculacaoService.getRelacionamentoAtivo(publicId).isEmpty()) {
             redirectAttributes.addFlashAttribute("erro", "Você precisa estar vinculade a um parceire para criar postagens.");
             return "redirect:/vinculacao";
         }
-        
+
         model.addAttribute("lugares", lugarRepository.findAllWithCategoria());
         model.addAttribute("postagemDTO", new PostagemDTO());
         return "nova-postagem";

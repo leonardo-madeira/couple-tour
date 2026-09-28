@@ -219,3 +219,15 @@ CREATE TABLE stage.seguidores (
     FOREIGN KEY (seguidor_id)
         REFERENCES stage.usuarios(id)
 );
+CREATE TABLE IF NOT EXISTS stage.casal_page_respostas (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id BIGINT NOT NULL,
+    relacionamento_id BIGINT NOT NULL,
+    foto_perfil_url VARCHAR(500),
+    resposta_1 TEXT,
+    resposta_2 TEXT,
+    resposta_3 TEXT,
+    UNIQUE KEY uk_casal_page_rel_user (relacionamento_id, usuario_id),
+    CONSTRAINT fk_casal_page_user FOREIGN KEY (usuario_id) REFERENCES stage.usuarios (id),
+    CONSTRAINT fk_casal_page_rel FOREIGN KEY (relacionamento_id) REFERENCES stage.relacionamentos (id)
+);

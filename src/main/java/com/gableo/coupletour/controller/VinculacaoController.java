@@ -19,12 +19,12 @@ public class VinculacaoController {
         String publicId = (String) request.getAttribute("usuarioId");
         model.addAttribute("usuarioNome", request.getAttribute("usuarioNome"));
         model.addAttribute("usuarioUniqueToken", request.getAttribute("usuarioUniqueToken"));
-        
+
         vinculacaoService.getRelacionamentoAtivo(publicId).ifPresent(rel -> {
             com.gableo.coupletour.model.Usuario parceiro = rel.getUsuarioA().getPublicId().equals(publicId) ? rel.getUsuarioB() : rel.getUsuarioA();
             model.addAttribute("nomeParceiro", parceiro.getNome());
         });
-        
+
         return "vinculacao";
     }
 
