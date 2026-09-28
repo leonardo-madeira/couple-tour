@@ -15,7 +15,10 @@ public class FeedService {
         this.feedRepository = feedRepository;
     }
 
-    public List<FeedProjection> getFeedGeral() {
+    public List<FeedProjection> getFeed(Long categoriaId) {
+        if (categoriaId != null) {
+            return feedRepository.getFeedPorCategoria(categoriaId);
+        }
         return feedRepository.getFeedGeral();
     }
 }

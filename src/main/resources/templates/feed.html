@@ -105,6 +105,16 @@
 </header>
 
 <main class="feed">
+    <div class="d-flex gap-2 pb-3 mb-3 overflow-auto" style="scrollbar-width: none;">
+        <a href="/feed" class="btn rounded-pill px-3 py-1 fw-bold text-nowrap"
+           th:classappend="${categoriaSelecionada == null} ? 'btn-dark' : 'btn-outline-secondary'"
+           style="font-size: 0.85rem;">Todos</a>
+        <a th:each="cat : ${categorias}" 
+           th:href="@{/feed(categoriaId=${cat.id})}" 
+           class="btn rounded-pill px-3 py-1 fw-bold text-nowrap"
+           th:classappend="${categoriaSelecionada == cat.id} ? 'btn-dark' : 'btn-outline-secondary'"
+           th:text="${cat.nome}" style="font-size: 0.85rem;">Categoria</a>
+    </div>
 
     <article th:each="post : ${posts}" class="post">
 
